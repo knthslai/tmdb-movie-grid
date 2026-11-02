@@ -30,13 +30,13 @@ Vite, React 19, TypeScript, Tailwind CSS v4 (with tw-animate-css for enter anima
 - **Title search.** The search box sits top left. Typing switches the grid from `/discover/movie` to `/search/movie`, which matches titles only and takes no genre or sort params, so the client filters that page by the selected genres and sorts it. The request waits for a 300 ms pause in typing, and the query is kept in the URL (`?q=alien`).
 - **Controls on one line.** The genre chips scroll sideways with a visible scrollbar; "All" clears the filter. The sort sits on the right as a segmented control, so all three options are visible and switching is one click. The bar stays pinned to the top while the grid scrolls.
 - **Cards.** Fixed-width card columns (CSS grid, `auto-fill`) centered on the page, so cards keep the poster's 2:3 shape at any screen width. Hover or keyboard focus scales the card up and shows the overview. Each card shows the release year and rating (or "No rating" when there are no votes).
-- **Tests on the logic, not the markup.** Vitest covers the request params, the sort and the URL parsing, which are pure functions.
+- **Tests.** Vitest unit tests cover the pure logic (request params, sort, URL parsing). Load tests (`src/App.test.tsx`) render the whole app in jsdom with only the TMDB calls faked, and check the first load, genre and sort changes, search, a shared link, and error + retry. No network or API key needed.
 
 ## Trade-offs and limitations
 
 - Only the first page (20 movies) is loaded, as the brief allows. The client sort ranks within that page, not the whole catalog.
 - The API key is read from a Vite env var, so it ends up in the browser bundle. That's fine locally; a public deploy would need a small server proxy that holds the key.
-- No pagination, loading skeleton or end-to-end tests yet.
+- No pagination or loading skeleton yet. The load tests fake TMDB, so there is no test against the live API.
 
 ## What I'd do next
 
