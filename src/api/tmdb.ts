@@ -21,7 +21,7 @@ export const tmdb = new TMDB(apiKey)
 // so a movie without a poster has `poster_path: undefined`.
 export type Movie = Pick<
   MovieResultItem,
-  'id' | 'title' | 'overview' | 'poster_path' | 'release_date' | 'vote_average' | 'vote_count' | 'genre_ids'
+  'id' | 'title' | 'overview' | 'poster_path' | 'release_date' | 'vote_average' | 'vote_count' | 'popularity' | 'genre_ids'
 >
 
 export type { Genre }
@@ -59,6 +59,11 @@ export function toWithGenres(genreIds: number[]): string | undefined {
 
 const today = () => new Date().toISOString().slice(0, 10)
 
+// Always sent, so every request is filtered: hides obscure movies with too few votes to judge.
+export const MIN_VOTES = 50
+// "Top rated" needs a higher floor, or it fills up with movies that have one 10/10 vote.
+export const TOP_RATED_MIN_VOTES = 200
+
 // App params -> the package's param names. Undefined values are left off the URL by the package.
 export function toDiscoverParams({ genreIds = [], sortBy = DEFAULT_SORT, page = 1 }: DiscoverParams): DiscoverMovieParams {
   return {
@@ -66,8 +71,7 @@ export function toDiscoverParams({ genreIds = [], sortBy = DEFAULT_SORT, page = 
     sort_by: sortBy,
     page,
     include_adult: false,
-    // Without a vote floor, "top rated" is movies with a single 10/10 vote.
-    'vote_count.gte': sortBy === 'vote_average.desc' ? 200 : undefined,
+    'vote_count.gte': sortBy === 'vote_average.desc' ? TOP_RATED_MIN_VOTES : MIN_VOTES,
     // Without a date cap, "newest" is unreleased movies with no poster or overview yet.
     'primary_release_date.lte': sortBy === 'primary_release_date.desc' ? today() : undefined,
   }

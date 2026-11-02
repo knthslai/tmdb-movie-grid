@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { posterUrl, toDiscoverParams, toWithGenres } from './tmdb'
+import { MIN_VOTES, TOP_RATED_MIN_VOTES, posterUrl, toDiscoverParams, toWithGenres } from './tmdb'
 
 describe('toWithGenres', () => {
   it('returns undefined for no genres', () => {
@@ -20,9 +20,9 @@ describe('toDiscoverParams', () => {
     expect(toDiscoverParams({})).toMatchObject({ sort_by: 'popularity.desc', page: 1, with_genres: undefined })
   })
 
-  it('adds a vote floor only for top rated', () => {
-    expect(toDiscoverParams({ sortBy: 'vote_average.desc' })['vote_count.gte']).toBe(200)
-    expect(toDiscoverParams({})['vote_count.gte']).toBeUndefined()
+  it('always sends a vote floor, higher for top rated', () => {
+    expect(toDiscoverParams({})['vote_count.gte']).toBe(MIN_VOTES)
+    expect(toDiscoverParams({ sortBy: 'vote_average.desc' })['vote_count.gte']).toBe(TOP_RATED_MIN_VOTES)
   })
 })
 
