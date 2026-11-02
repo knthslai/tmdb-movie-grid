@@ -1,11 +1,14 @@
-// T06 — Sorting (pure logic)
-// Issue: https://github.com/knthslai/tmdb-movie-grid/issues/7 · Spec: specs/T06-controls.md
-// Empty stub with TODO tags, created by Claude Code. The code is mine to write.
+import type { Movie } from '../api/tmdb'
 
-// TODO(T06): sort option type (which properties, which directions)
-// TODO(T06): sort function: movies + option -> NEW array (toSorted; never mutate cached data)
-// TODO(T06): rule for missing values (no rating, release_date of "")
-//
-// Own it. Be ready to explain:
-// - toSorted vs sort, and what goes wrong with sort here
-// - why a client sort only reorders the 20 results on screen
+export function countGenreMatches(movie: Pick<Movie, 'genre_ids'>, selected: Set<number>): number {
+  return movie.genre_ids.filter((id) => selected.has(id)).length
+}
+
+// Movies that match more of the selected genres come first.
+// toSorted returns a new array (the cached query data is never mutated) and is stable,
+// so movies with the same match count keep TMDB's order, i.e. the chosen server sort.
+export function sortByGenreMatches<T extends Pick<Movie, 'genre_ids'>>(movies: T[], genreIds: number[]): T[] {
+  if (genreIds.length < 2) return movies // with 0 or 1 genre every movie ties
+  const selected = new Set(genreIds)
+  return movies.toSorted((a, b) => countGenreMatches(b, selected) - countGenreMatches(a, selected))
+}
