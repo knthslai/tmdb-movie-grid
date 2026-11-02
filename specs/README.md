@@ -21,9 +21,8 @@ One spec per ticket. The **issue** holds status, the checklist and the discussio
 
 ## How I work a ticket
 
-1. Move the card to **Building** (one at a time). Create the branch: `git switch -c task/t02-tmdb-api`. The branch name links my Claude questions to the issue.
+1. Move the card to **Building** (one at a time). Create the branch: `git switch -c task/t02-tmdb-api`.
 2. Read the spec. Rewrite the acceptance criteria on the issue if I disagree with them.
-3. Build it myself, following the spec's steps. Ask Claude when stuck. Every exchange is posted to the issue automatically.
+3. Build it myself, following the spec's steps.
 4. Run the checks in the spec. Commit with the ticket id in the message (`feat: discover params and genre join (T02)`).
 5. Move the card to **Verify and understand**. Work through the Done gate on the issue, then move it to **Done** by hand.
-

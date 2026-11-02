@@ -26,4 +26,3 @@ Issue: [#5](https://github.com/knthslai/tmdb-movie-grid/issues/5) · File: `src/
 ## Decisions I make
 
 - Is the card focusable (`tabIndex={0}`, or a `<button>`/`<a>`)? What does clicking it do, if anything?
-

@@ -32,4 +32,3 @@ This is the "assessed behavior" most likely to be extended live: a new filter, a
 
 - `replaceState` or `pushState`?
 - What is derived state here? (The sorted list should be derived, not stored.)
-

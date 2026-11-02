@@ -2,11 +2,7 @@
 
 Issues: [label:drill](https://github.com/knthslai/tmdb-movie-grid/issues?q=is%3Aissue+label%3Adrill)
 
-Practice for the live extension. AI is off during the drill: close the agent panel and don't use edit predictions. Docs are allowed. Each drill is timeboxed to 20 minutes on a throwaway branch (`git switch -c drill/d1`).
-
-Claude's role in drills is **before and after only**:
-- **Before:** ask me the "answer before coding" questions on the issue, one at a time, and tell me if my plan has a gap. No solutions.
-- **After:** review my diff with questions, and quiz me on why it works. Note weak spots as new Human cards.
+Practice for the live extension. Docs are allowed. Each drill is timeboxed to 20 minutes on a throwaway branch (`git switch -c drill/d1`).
 
 ## D1 — Load more / pagination
 

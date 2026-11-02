@@ -18,4 +18,3 @@ Issue: [#8](https://github.com/knthslai/tmdb-movie-grid/issues/8) · Files: `src
 ## Decisions I make
 
 - Which cases are worth a test, and which aren't? Be ready to say why I didn't test components.
-

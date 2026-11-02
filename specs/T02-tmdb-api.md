@@ -47,10 +47,9 @@ Also run one real request in the browser console and compare it with `Movie`: fi
 - `poster_path` missing.
 - Key missing because `.env.local` wasn't created.
 
-## Decisions I make (no AI answer)
+## Decisions
 
 - Where the key is read: here at import, or passed in? What does the app show when it's missing?
 - Package cache and request deduplication: on or off, given TanStack Query (T03) also caches?
 - `null` or `undefined` for "no poster" in my own types.
 - Hardcode the genre list, or fetch it with `tmdb.genres.movie_list()`?
-

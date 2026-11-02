@@ -27,4 +27,3 @@ Issue: [#2](https://github.com/knthslai/tmdb-movie-grid/issues/2) · Implementat
 
 - [ ] Decisions are written on the issue
 - [ ] Acceptance criteria on T02–T06 are confirmed or edited
-

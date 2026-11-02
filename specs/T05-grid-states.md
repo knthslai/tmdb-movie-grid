@@ -19,4 +19,3 @@ Issue: [#6](https://github.com/knthslai/tmdb-movie-grid/issues/6) · Files: `src
 
 - Spinner, text, or skeleton cards for loading?
 - When refetching with old data on screen (`isFetching`), show anything?
-

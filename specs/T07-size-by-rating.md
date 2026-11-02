@@ -15,4 +15,3 @@ Only start this if T01–T06 and T09 are done inside the time budget.
 1. Write a small pure function from `vote_average` to a size (for example, `'lg' | 'md' | 'sm'`). Choose thresholds and write them down.
 2. Map the size to classes in the card or grid.
 3. Test at phone width. Disable spans when there's only one or two columns (a media query or container query).
-

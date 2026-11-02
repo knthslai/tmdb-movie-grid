@@ -34,4 +34,3 @@ This is where server state lives. Reviewers will ask what happens when filters c
 - Retry policy for 4xx errors.
 - `staleTime`: how fresh does discover data need to be?
 - Query key: my params object as-is, or with the genre ids sorted first?
-

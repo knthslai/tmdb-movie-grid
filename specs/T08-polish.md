@@ -15,4 +15,3 @@ Only start this if T01–T06 and T09 are done inside the time budget.
 1. Add hover/focus transitions to the card's overview reveal.
 2. Add a layout toggle (`?layout=list`) that switches the grid classes.
 3. Turn on "Reduce motion" in macOS settings and check that transitions stop.
-
