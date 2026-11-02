@@ -1,8 +1,8 @@
 # Discover movies
 
-![The app after `npm start`: a New releases row with one card scaled up on hover, the sort and genre controls, and the movie grid](docs/screenshot.png)
+![The app after `npm start`, sorted by Top rated: the title search top left, the New releases row, the genre chips and sort on one line, and the centered movie grid](docs/screenshot.png)
 
-A small React app that fetches movies from TMDB's `/discover/movie` endpoint and shows them as a grid of cards.
+A small React app that fetches movies from TMDB's `/discover/movie` endpoint and shows them as a grid of cards, with genre filters, a sort, title search (`/search/movie`) and a New releases row.
 
 ## Run it
 
