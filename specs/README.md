@@ -14,6 +14,7 @@ One spec per ticket. The **issue** holds status, the checklist and the discussio
 | T07 Size by rating | [#11](https://github.com/knthslai/tmdb-movie-grid/issues/11) | [T07-size-by-rating.md](T07-size-by-rating.md) |
 | T08 Transitions and layout | [#12](https://github.com/knthslai/tmdb-movie-grid/issues/12) | [T08-polish.md](T08-polish.md) |
 | T09 Tests | [#8](https://github.com/knthslai/tmdb-movie-grid/issues/8) | [T09-tests.md](T09-tests.md) |
+| T11 Load tests | — | [T11-load-tests.md](T11-load-tests.md) |
 | T10 README | [#9](https://github.com/knthslai/tmdb-movie-grid/issues/9) | [T10-readme.md](T10-readme.md) |
 | T12 Send | [#10](https://github.com/knthslai/tmdb-movie-grid/issues/10) | checklist on the issue |
 | D1–D7 Drills | [#13–#19](https://github.com/knthslai/tmdb-movie-grid/issues?q=is%3Aissue+label%3Adrill) | [drills.md](drills.md) |
