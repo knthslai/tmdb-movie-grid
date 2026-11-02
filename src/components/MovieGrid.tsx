@@ -1,10 +1,11 @@
 import type { Movie } from '../api/tmdb'
 import { MovieCard } from './MovieCard'
 
-// Fixed-width cards in a wrapping row: one or two per row on a phone, many on desktop.
+// Fixed-width card columns, as many as fit, centered so the leftover space is split evenly.
+// One or two per row on a phone, many on desktop.
 export function MovieGrid({ movies }: { movies: Movie[] }) {
   return (
-    <ul className="flex flex-wrap justify-center gap-4 sm:justify-start">
+    <ul className="grid grid-cols-[repeat(auto-fill,10rem)] justify-center gap-4 sm:grid-cols-[repeat(auto-fill,11rem)]">
       {movies.map((movie) => (
         <li key={movie.id}>
           <MovieCard movie={movie} />
