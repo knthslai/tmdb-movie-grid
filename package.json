@@ -13,7 +13,8 @@
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
     "test:types": "vitest --typecheck.only --run --passWithNoTests",
-    "todo": "grep -rn 'TODO(T' src"
+    "todo": "grep -rnE 'TODO\\((T|gen)' src",
+    "gen": "node scripts/gen.mjs"
   },
   "dependencies": {
     "@lorenzopant/tmdb": "^2.2.0",

@@ -14,6 +14,18 @@ npm start                    # opens http://localhost:5173
 
 Other scripts: `npm test`, `npm run typecheck`, `npm run lint`, `npm run build`.
 
+### Adding a feature
+
+`npm run gen -- <kind> <name>` writes the boilerplate for a new piece, in the same shape as the existing code. Each generated file typechecks, lints and passes its test as-is, with `TODO(gen)` markers where the real logic goes (`npm run todo` lists them). It never overwrites anything.
+
+| Command | Writes |
+|---|---|
+| `npm run gen -- api movie-details` | `MovieDetailsParams`, `toMovieDetailsParams` and `fetchMovieDetails` appended to `src/api/tmdb.ts`, plus `src/api/movieDetails.test.ts` |
+| `npm run gen -- hook movie-details` | `src/api/useMovieDetails.ts`, a TanStack Query hook for that fetcher |
+| `npm run gen -- feature movie-details` | both of the above |
+| `npm run gen -- component MovieDetails` | `src/components/MovieDetails.tsx` |
+| `npm run gen -- lib rank-by-votes` | `src/lib/rankByVotes.ts` and its test |
+
 ## Stack
 
 Vite, React 19, TypeScript, Tailwind CSS v4 (with tw-animate-css for enter animations), TanStack Query, [@lorenzopant/tmdb](https://www.npmjs.com/package/@lorenzopant/tmdb) (typed TMDB client), Vitest.
