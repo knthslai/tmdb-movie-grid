@@ -1,11 +1,29 @@
-// T09 — Tests for sorting
-// Issue: https://github.com/knthslai/tmdb-movie-grid/issues/8 · Spec: specs/T09-tests.md
-// Empty stub with TODO tags, created by Claude Code. The assertions are mine to write.
-import { describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
+import { sortByGenreMatches } from './sortMovies'
 
-describe('sortMovies', () => {
-  // TODO(T09): replace each it.todo with a real test; break the sort on purpose once to see one fail
-  it.todo('orders correctly for each sort option')
-  it.todo('does not mutate the input array')
-  it.todo('places movies with missing values where I decided')
+const movie = (id: number, genre_ids: number[]) => ({ id, genre_ids })
+
+describe('sortByGenreMatches', () => {
+  it('puts movies matching more selected genres first', () => {
+    const movies = [movie(1, [28]), movie(2, [28, 12, 16]), movie(3, [28, 12])]
+    expect(sortByGenreMatches(movies, [28, 12, 16]).map((m) => m.id)).toEqual([2, 3, 1])
+  })
+
+  it('keeps the server order for ties', () => {
+    const movies = [movie(1, [28]), movie(2, [12]), movie(3, [28, 12])]
+    expect(sortByGenreMatches(movies, [28, 12]).map((m) => m.id)).toEqual([3, 1, 2])
+  })
+
+  it('does not mutate the input array', () => {
+    const movies = [movie(1, [28]), movie(2, [28, 12])]
+    const copy = [...movies]
+    sortByGenreMatches(movies, [28, 12])
+    expect(movies).toEqual(copy)
+  })
+
+  it('returns the list unchanged with fewer than two genres', () => {
+    const movies = [movie(1, [28]), movie(2, [12])]
+    expect(sortByGenreMatches(movies, [])).toBe(movies)
+    expect(sortByGenreMatches(movies, [12])).toBe(movies)
+  })
 })

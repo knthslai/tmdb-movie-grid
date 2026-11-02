@@ -1,15 +1,37 @@
-// T09 — Tests for the genre param and poster helper
-// Issue: https://github.com/knthslai/tmdb-movie-grid/issues/8 · Spec: specs/T09-tests.md
-// Empty stub with TODO tags, created by Claude Code. The assertions are mine to write.
-import { describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
+import { posterUrl, toDiscoverParams, toWithGenres } from './tmdb'
 
-describe('genre param', () => {
-  // TODO(T09): replace each it.todo with a real test
-  it.todo('returns undefined for no genres')
-  it.todo('joins several ids with the separator I chose in T01')
-  it.todo('gives the same value for the same ids in a different order')
+describe('toWithGenres', () => {
+  it('returns undefined for no genres', () => {
+    expect(toWithGenres([])).toBeUndefined()
+  })
+
+  it('joins several ids with | (any of the genres)', () => {
+    expect(toWithGenres([12, 28])).toBe('12|28')
+  })
+
+  it('gives the same value for the same ids in any order, without duplicates', () => {
+    expect(toWithGenres([28, 12, 28])).toBe(toWithGenres([12, 28]))
+  })
 })
 
-describe('poster URL', () => {
-  it.todo('returns my "no poster" value when poster_path is missing')
+describe('toDiscoverParams', () => {
+  it('defaults to popular movies, page 1, no genre filter', () => {
+    expect(toDiscoverParams({})).toMatchObject({ sort_by: 'popularity.desc', page: 1, with_genres: undefined })
+  })
+
+  it('adds a vote floor only for top rated', () => {
+    expect(toDiscoverParams({ sortBy: 'vote_average.desc' })['vote_count.gte']).toBe(200)
+    expect(toDiscoverParams({})['vote_count.gte']).toBeUndefined()
+  })
+})
+
+describe('posterUrl', () => {
+  it('returns undefined when poster_path is missing', () => {
+    expect(posterUrl(undefined)).toBeUndefined()
+  })
+
+  it('builds a URL that contains the path', () => {
+    expect(posterUrl('/abc.jpg')).toContain('/abc.jpg')
+  })
 })
