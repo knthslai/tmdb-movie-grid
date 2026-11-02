@@ -1,14 +1,22 @@
-// T03 — Data hook with loading, error and empty states
-// Issue: https://github.com/knthslai/tmdb-movie-grid/issues/4 · Spec: specs/T03-data-hook.md
-// Empty stub with TODO tags, created by Claude Code. The code is mine to write.
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { discoverMovies, fetchGenres, toDiscoverParams, type DiscoverParams } from './tmdb'
 
-// TODO(T03): query fn: map my T02 params to DiscoverMovieParams, call tmdb.discover.movie
-// TODO(T03): make a missing VITE_TMDB_API_KEY show a readable error, not an empty grid
-// TODO(T03): useQuery hook; every param goes in the query key (same genres, any order, same key)
-// TODO(T03): decide the retry policy for 4xx (TMDBError.http_status_code) and the staleTime
-// TODO(T03): genres query for tmdb.genres.movie_list(), if I fetch genres
-//
-// Own it. Be ready to explain:
-// - what the query key does, and what breaks if a param is missing from it
-// - what the user sees when filters change quickly, given the package can't cancel requests
-// - where pagination would plug in
+// The query key is the cache key, so every param must be in it. Using the mapped TMDB params
+// means the same genres in a different order share one cache entry.
+// keepPreviousData keeps the current grid on screen while the next filter loads.
+export function useDiscoverMovies(params: DiscoverParams = {}) {
+  return useQuery({
+    queryKey: ['discover', toDiscoverParams(params)],
+    queryFn: () => discoverMovies(params),
+    placeholderData: keepPreviousData,
+  })
+}
+
+// Genre names rarely change, so fetch them once per session.
+export function useGenres() {
+  return useQuery({
+    queryKey: ['genres'],
+    queryFn: fetchGenres,
+    staleTime: Infinity,
+  })
+}
