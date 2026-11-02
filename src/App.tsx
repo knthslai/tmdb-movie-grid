@@ -1,15 +1,16 @@
 import { useDiscoverMovies, useGenres } from './api/useDiscoverMovies'
 import { Controls } from './components/Controls'
 import { MovieGrid } from './components/MovieGrid'
-import { sortByGenreMatches } from './lib/sortMovies'
+import { sortMovies } from './lib/sortMovies'
 import { useViewState } from './lib/urlState'
 
 export default function App() {
   const [view, setView] = useViewState()
   const genres = useGenres()
-  // Filter and server sort go to TMDB; the genre-match ranking happens here on the client.
+  // TMDB filters and sorts the whole catalog and returns page 1; the client then ranks that page
+  // by genre matches, ties broken by the chosen sort.
   const movies = useDiscoverMovies({ genreIds: view.genreIds, sortBy: view.sortBy })
-  const ranked = movies.data ? sortByGenreMatches(movies.data.results, view.genreIds) : []
+  const ranked = movies.data ? sortMovies(movies.data.results, view.genreIds, view.sortBy) : []
 
   return (
     <main className="mx-auto max-w-6xl p-6">
