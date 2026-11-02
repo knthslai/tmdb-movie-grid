@@ -1,5 +1,7 @@
 # Discover movies
 
+![The app after `npm start`: a New releases row with one card scaled up on hover, the sort and genre controls, and the movie grid](docs/screenshot.png)
+
 A small React app that fetches movies from TMDB's `/discover/movie` endpoint and shows them as a grid of cards.
 
 ## Run it
@@ -24,7 +26,9 @@ Vite, React 19, TypeScript, Tailwind CSS v4 (with tw-animate-css for enter anima
 - **State in the URL.** Genres and sort live in the query string (`?genres=28,12&sort=vote_average.desc`), so a view can be linked and survives a reload. Invalid values fall back to the defaults.
 - **TanStack Query for fetching.** It caches each filter and sort combination and keeps the previous results on screen (dimmed) while the next request loads, so the grid doesn't flash empty.
 - **Typed TMDB client.** `@lorenzopant/tmdb` gives typed params and responses and accepts a v3 API key. All TMDB access goes through `src/api/tmdb.ts`, so swapping the package only touches one file.
-- **Cards.** Fixed-width cards in a wrapping flex layout, so cards keep the poster's 2:3 shape at any screen width. Hover or keyboard focus lifts the card and shows the overview. Each card shows the release year and rating (or "No rating" when there are no votes).
+- **New releases row.** A separate request (newest first, no genre filter) fills a sideways-scrolling row at the top. Trackpad, touch and the arrow buttons scroll it, and cards snap to the left edge.
+- **Controls on one line.** The sort is a segmented control, so all three options are visible and switching is one click. The genre chips sit next to it and scroll sideways with a visible scrollbar; "All" clears the filter. The bar stays pinned to the top while the grid scrolls.
+- **Cards.** Fixed-width cards in a wrapping flex layout, so cards keep the poster's 2:3 shape at any screen width. Hover or keyboard focus scales the card up and shows the overview. Each card shows the release year and rating (or "No rating" when there are no votes).
 - **Tests on the logic, not the markup.** Vitest covers the request params, the sort and the URL parsing, which are pure functions.
 
 ## Trade-offs and limitations
