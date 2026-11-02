@@ -44,3 +44,4 @@ Vite, React 19, TypeScript, Tailwind CSS v4 (with tw-animate-css for enter anima
 ## Project notes
 
 Work is split into tickets: GitHub issues, each with a spec in [specs/](specs/README.md).
+
