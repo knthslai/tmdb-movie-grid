@@ -1,4 +1,4 @@
-import { SORT_OPTIONS, isSortOption, type Genre } from '../api/tmdb'
+import { SORT_OPTIONS, type Genre } from '../api/tmdb'
 import type { ViewState } from '../lib/urlState'
 
 type Props = {
@@ -7,6 +7,13 @@ type Props = {
   onChange: (next: ViewState) => void
 }
 
+const chip = (active: boolean) =>
+  `shrink-0 rounded-full border px-3 py-1 text-sm motion-safe:transition-colors motion-safe:duration-150 ease-reveal ${
+    active ? 'border-accent bg-accent text-accent-fg' : 'border-border bg-surface text-fg hover:bg-surface-raised'
+  }`
+
+// One line: the sort is a segmented control (all three options visible, one click to switch),
+// then the genre chips, which scroll sideways with a visible scrollbar. "All" clears the filter.
 export function Controls({ genres, value, onChange }: Props) {
   const selected = new Set(value.genreIds)
 
@@ -16,58 +23,57 @@ export function Controls({ genres, value, onChange }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <label className="flex items-center gap-2 text-sm text-muted">
-        Sort by
-        <select
-          className="rounded-card border border-border bg-surface px-3 py-1.5 text-fg"
-          value={value.sortBy}
-          onChange={(e) => {
-            if (isSortOption(e.target.value)) onChange({ ...value, sortBy: e.target.value })
-          }}
-        >
-          {SORT_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <fieldset>
-        <legend className="mb-2 text-sm text-muted">
-          Genres {value.genreIds.length > 1 && '· movies matching more of your picks come first'}
-        </legend>
-        <div className="flex flex-wrap gap-2">
-          {genres.map((genre) => {
-            const active = selected.has(genre.id)
+    <div className="flex flex-col gap-2">
+      <div className="flex items-start gap-3">
+        <div role="group" aria-label="Sort by" className="flex shrink-0 rounded-full border border-border bg-surface p-1">
+          {SORT_OPTIONS.map((option) => {
+            const active = option.value === value.sortBy
             return (
               <button
-                key={genre.id}
+                key={option.value}
                 type="button"
                 aria-pressed={active}
-                onClick={() => toggleGenre(genre.id)}
-                className={`rounded-full border px-3 py-1 text-sm motion-safe:transition-colors motion-safe:duration-150 ease-reveal ${
-                  active
-                    ? 'border-accent bg-accent text-accent-fg'
-                    : 'border-border bg-surface text-fg hover:bg-surface-raised'
+                onClick={() => onChange({ ...value, sortBy: option.value })}
+                className={`rounded-full px-3 py-1 text-sm motion-safe:transition-colors motion-safe:duration-150 ease-reveal ${
+                  active ? 'bg-accent text-accent-fg' : 'text-muted hover:text-fg'
                 }`}
               >
-                {genre.name}
+                {option.label}
               </button>
             )
           })}
-          {value.genreIds.length > 0 && (
-            <button
-              type="button"
-              onClick={() => onChange({ ...value, genreIds: [] })}
-              className="px-3 py-1 text-sm text-muted underline-offset-4 hover:underline"
-            >
-              Clear
-            </button>
-          )}
         </div>
-      </fieldset>
+
+        <div
+          role="group"
+          aria-label="Genres"
+          className="flex min-w-0 flex-1 gap-2 overflow-x-auto pt-1 pb-2 [scrollbar-color:var(--color-border)_transparent] [scrollbar-width:thin]"
+        >
+          <button
+            type="button"
+            aria-pressed={selected.size === 0}
+            onClick={() => onChange({ ...value, genreIds: [] })}
+            className={chip(selected.size === 0)}
+          >
+            All
+          </button>
+          {genres.map((genre) => (
+            <button
+              key={genre.id}
+              type="button"
+              aria-pressed={selected.has(genre.id)}
+              onClick={() => toggleGenre(genre.id)}
+              className={chip(selected.has(genre.id))}
+            >
+              {genre.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {value.genreIds.length > 1 && (
+        <p className="text-xs text-muted">Movies matching more of your genres come first.</p>
+      )}
     </div>
   )
 }
