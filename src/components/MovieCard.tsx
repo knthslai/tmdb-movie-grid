@@ -1,6 +1,6 @@
 import { posterUrl, type Movie } from '../api/tmdb'
 
-// Poster-first card. Hover or keyboard focus slides the overview up over the poster.
+// Poster-first card. Hover or keyboard focus scales the card up and fades the overview in over the poster.
 export function MovieCard({ movie }: { movie: Movie }) {
   const src = posterUrl(movie.poster_path)
   const year = movie.release_date.slice(0, 4) // "" when TMDB has no date
@@ -9,7 +9,7 @@ export function MovieCard({ movie }: { movie: Movie }) {
   return (
     <article
       tabIndex={0}
-      className="group w-40 overflow-hidden rounded-card bg-surface sm:w-44 motion-safe:transition-transform motion-safe:duration-200 ease-reveal hover:-translate-y-1 focus-visible:-translate-y-1"
+      className="group relative w-40 overflow-hidden rounded-card bg-surface sm:w-44 motion-safe:transition-transform motion-safe:duration-200 ease-reveal hover:z-10 hover:scale-105 focus-visible:z-10 focus-visible:scale-105"
     >
       <div className="relative aspect-poster">
         {src ? (
