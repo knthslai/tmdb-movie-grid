@@ -35,7 +35,7 @@ The point: the package's types are someone else's claims about TMDB. These tests
 - `Movie` has exactly the fields I picked, and no more.
 - `poster_path` on `Movie` accepts `undefined`, and my poster helper's return type includes my "no poster" value.
 - `release_date` is a `string`, not a `Date`.
-- My params type rejects a sort value TMDB doesn't support (use `// @ts-expect-error`).
+- My params type rejects a sort value TMDB doesn't support (use `// @ts-expect-error` with a value outside TMDB's sort union, not merely an app-hidden sort).
 - My genre-param function returns `string | undefined`.
 
 Also run one real request in the browser console and compare it with `Movie`: find a movie whose poster is missing and see what the field is.

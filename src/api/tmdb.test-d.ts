@@ -24,9 +24,9 @@ describe('TMDB types', () => {
     expectTypeOf<Movie['release_date']>().toEqualTypeOf<string>()
   })
 
-  it('rejects sort values outside app-supported TMDB sorts', () => {
-    // @ts-expect-error "title.asc" is not one of this app's SortOption values.
-    const params: DiscoverParams = { sortBy: 'title.asc' }
+  it('rejects a sort value TMDB does not support', () => {
+    // @ts-expect-error This is not a valid TMDB DiscoverMovieSortBy value.
+    const params: DiscoverParams = { sortBy: 'not-a-tmdb-sort' }
     expectTypeOf(params).toEqualTypeOf<DiscoverParams>()
   })
 
