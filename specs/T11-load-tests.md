@@ -21,5 +21,5 @@ Prove the page loads as expected without a network or an API key. The tests rend
 
 - `// @vitest-environment jsdom` at the top of the file, so the pure-logic tests keep running in Node.
 - A fresh `QueryClient` per test with `retry: false`, so errors show at once and no cache leaks between tests.
-- jsdom has no `matchMedia`. The stub reports reduced motion, so the New releases row stays still and the test has no animation frames to wait for.
+- jsdom has no `matchMedia`, so the tests stub it. The row's auto-scroll still runs; cleanup cancels its animation frame.
 - Reset the URL before each test: the view state is read from `window.location`.

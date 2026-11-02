@@ -8,7 +8,7 @@ const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: r
 
 // A horizontally scrolling row of cards that drifts slowly to the left on its own. The list is
 // rendered twice so the drift can loop without a jump; the copy is hidden from screen readers and
-// keyboard focus. Hover or focus pauses the drift, and reduced-motion users get a static row.
+// keyboard focus. Hover or focus pauses the drift.
 // Trackpads, touch and the arrow buttons still scroll it by hand.
 export function MovieRow({ title, movies }: { title: string; movies: Movie[] }) {
   const scroller = useRef<HTMLUListElement>(null)
@@ -16,7 +16,8 @@ export function MovieRow({ title, movies }: { title: string; movies: Movie[] }) 
 
   useEffect(() => {
     const el = scroller.current
-    if (!el || paused || prefersReducedMotion()) return
+    // Runs even with reduced motion on: the drift is slow and stops on hover or focus.
+    if (!el || paused) return
 
     // Track the position as a float: scrollLeft rounds, so tiny per-frame steps would be lost.
     let position = el.scrollLeft

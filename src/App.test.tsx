@@ -54,7 +54,7 @@ const gridTitles = () => grid().getAllByRole('article').map((card) => within(car
 
 beforeEach(() => {
   window.history.replaceState(null, '', '/')
-  // jsdom has no matchMedia. Reporting reduced motion keeps the New releases row still.
+  // jsdom has no matchMedia (MovieRow reads it for the arrow buttons' smooth scroll).
   window.matchMedia = vi.fn().mockReturnValue({ matches: true }) as unknown as typeof window.matchMedia
   vi.mocked(fetchGenres).mockResolvedValue([
     { id: ACTION, name: 'Action' },
