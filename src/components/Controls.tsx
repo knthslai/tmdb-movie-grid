@@ -12,8 +12,8 @@ const chip = (active: boolean) =>
     active ? 'border-accent bg-accent text-accent-fg' : 'border-border bg-surface text-fg hover:bg-surface-raised'
   }`
 
-// One line: the sort is a segmented control (all three options visible, one click to switch),
-// then the genre chips, which scroll sideways with a visible scrollbar. "All" clears the filter.
+// One line: the genre chips scroll sideways with a visible scrollbar ("All" clears the filter),
+// and the sort sits on the right as a segmented control (all three options visible, one click to switch).
 export function Controls({ genres, value, onChange }: Props) {
   const selected = new Set(value.genreIds)
 
@@ -25,25 +25,6 @@ export function Controls({ genres, value, onChange }: Props) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-start gap-3">
-        <div role="group" aria-label="Sort by" className="flex shrink-0 rounded-full border border-border bg-surface p-1">
-          {SORT_OPTIONS.map((option) => {
-            const active = option.value === value.sortBy
-            return (
-              <button
-                key={option.value}
-                type="button"
-                aria-pressed={active}
-                onClick={() => onChange({ ...value, sortBy: option.value })}
-                className={`rounded-full px-3 py-1 text-sm motion-safe:transition-colors motion-safe:duration-150 ease-reveal ${
-                  active ? 'bg-accent text-accent-fg' : 'text-muted hover:text-fg'
-                }`}
-              >
-                {option.label}
-              </button>
-            )
-          })}
-        </div>
-
         <div
           role="group"
           aria-label="Genres"
@@ -68,6 +49,25 @@ export function Controls({ genres, value, onChange }: Props) {
               {genre.name}
             </button>
           ))}
+        </div>
+
+        <div role="group" aria-label="Sort by" className="flex shrink-0 rounded-full border border-border bg-surface p-1">
+          {SORT_OPTIONS.map((option) => {
+            const active = option.value === value.sortBy
+            return (
+              <button
+                key={option.value}
+                type="button"
+                aria-pressed={active}
+                onClick={() => onChange({ ...value, sortBy: option.value })}
+                className={`rounded-full px-3 py-1 text-sm motion-safe:transition-colors motion-safe:duration-150 ease-reveal ${
+                  active ? 'bg-accent text-accent-fg' : 'text-muted hover:text-fg'
+                }`}
+              >
+                {option.label}
+              </button>
+            )
+          })}
         </div>
       </div>
 
