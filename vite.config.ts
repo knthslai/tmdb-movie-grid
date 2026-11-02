@@ -5,5 +5,8 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  server: { open: true },
+  server: {
+    open: true,
+    // port:8080 <- Should we choose to change startup port
+  },
 })
