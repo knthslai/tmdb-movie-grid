@@ -26,9 +26,10 @@ Vite, React 19, TypeScript, Tailwind CSS v4 (with tw-animate-css for enter anima
 - **State in the URL.** Genres and sort live in the query string (`?genres=28,12&sort=vote_average.desc`), so a view can be linked and survives a reload. Invalid values fall back to the defaults.
 - **TanStack Query for fetching.** It caches each filter and sort combination and keeps the previous results on screen (dimmed) while the next request loads, so the grid doesn't flash empty.
 - **Typed TMDB client.** `@lorenzopant/tmdb` gives typed params and responses and accepts a v3 API key. All TMDB access goes through `src/api/tmdb.ts`, so swapping the package only touches one file.
-- **New releases row.** A separate request (newest first, no genre filter) fills a row at the top that drifts slowly to the left and loops back to the start. The cards are rendered twice so the loop has no jump (the copy is hidden from screen readers and keyboard). Hover or focus pauses it, reduced-motion users get a still row, and trackpad, touch and the arrow buttons still scroll it by hand.
+- **New releases row.** A separate request (newest first, no genre filter) fills a row at the top that drifts slowly to the left and loops back to the start. The cards are rendered twice so the loop has no jump (the copy is hidden from screen readers and keyboard). Hover or focus pauses it, reduced-motion users get a still row (macOS: System Settings → Accessibility → Display → Reduce motion), and trackpad, touch and the arrow buttons still scroll it by hand.
+- **Title search.** The search box sits top left. Typing switches the grid from `/discover/movie` to `/search/movie`, which matches titles only and takes no genre or sort params, so the client filters that page by the selected genres and sorts it. The request waits for a 300 ms pause in typing, and the query is kept in the URL (`?q=alien`).
 - **Controls on one line.** The genre chips scroll sideways with a visible scrollbar; "All" clears the filter. The sort sits on the right as a segmented control, so all three options are visible and switching is one click. The bar stays pinned to the top while the grid scrolls.
-- **Cards.** Fixed-width cards in a wrapping flex layout, so cards keep the poster's 2:3 shape at any screen width. Hover or keyboard focus scales the card up and shows the overview. Each card shows the release year and rating (or "No rating" when there are no votes).
+- **Cards.** Fixed-width card columns (CSS grid, `auto-fill`) centered on the page, so cards keep the poster's 2:3 shape at any screen width. Hover or keyboard focus scales the card up and shows the overview. Each card shows the release year and rating (or "No rating" when there are no votes).
 - **Tests on the logic, not the markup.** Vitest covers the request params, the sort and the URL parsing, which are pure functions.
 
 ## Trade-offs and limitations
@@ -43,7 +44,8 @@ Vite, React 19, TypeScript, Tailwind CSS v4 (with tw-animate-css for enter anima
 2. A second layout option, such as a list view.
 3. Infinite scroll or a "Load more" button.
 4. A loading skeleton in place of the "Loading…" text.
-5. A server proxy for the API key, then deploy.
+5. Search by other categories, not just titles: people (cast and crew), keywords and collections (TMDB `/search/person`, `/search/keyword`, `/search/collection`).
+6. A server proxy for the API key, then deploy.
 
 ## Project notes
 

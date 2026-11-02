@@ -9,6 +9,7 @@ import {
   type MovieResultItem,
   type PaginatedResponse,
   type PosterSize,
+  type SearchMoviesParams,
 } from '@lorenzopant/tmdb'
 
 const apiKey = import.meta.env.VITE_TMDB_API_KEY
@@ -88,6 +89,18 @@ function requireApiKey() {
 export async function discoverMovies(params: DiscoverParams = {}): Promise<DiscoverResult> {
   requireApiKey()
   return tmdb.discover.movie(toDiscoverParams(params))
+}
+
+// /search/movie matches titles only and takes no genre or sort params,
+// so the client filters and sorts the results (see `filterByGenres` and `sortMovies`).
+export function toSearchParams(query: string, page = 1): SearchMoviesParams {
+  return { query: query.trim(), page, include_adult: false }
+}
+
+// One page of /search/movie for a title query.
+export async function searchMovies(query: string, page = 1): Promise<DiscoverResult> {
+  requireApiKey()
+  return tmdb.search.movies(toSearchParams(query, page))
 }
 
 export async function fetchGenres(): Promise<Genre[]> {

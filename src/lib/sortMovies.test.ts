@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { sortMovies } from './sortMovies'
+import { filterByGenres, sortMovies } from './sortMovies'
 
 const movie = (id: number, genre_ids: number[], extra: { popularity?: number; vote_average?: number; release_date?: string } = {}) => ({
   id,
@@ -35,5 +35,17 @@ describe('sortMovies', () => {
     const copy = [...movies]
     sortMovies(movies, [], 'popularity.desc')
     expect(movies).toEqual(copy)
+  })
+})
+
+describe('filterByGenres', () => {
+  it('keeps movies with any of the selected genres', () => {
+    const movies = [movie(1, [28]), movie(2, [35]), movie(3, [12, 35])]
+    expect(filterByGenres(movies, [28, 12]).map((m) => m.id)).toEqual([1, 3])
+  })
+
+  it('keeps everything when no genres are selected', () => {
+    const movies = [movie(1, [28]), movie(2, [])]
+    expect(filterByGenres(movies, [])).toBe(movies)
   })
 })

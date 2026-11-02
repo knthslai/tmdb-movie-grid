@@ -12,8 +12,9 @@ const chip = (active: boolean) =>
     active ? 'border-accent bg-accent text-accent-fg' : 'border-border bg-surface text-fg hover:bg-surface-raised'
   }`
 
-// One line: the genre chips scroll sideways with a visible scrollbar ("All" clears the filter),
-// and the sort sits on the right as a segmented control (all three options visible, one click to switch).
+// One line: the genre chips (they scroll sideways with a visible scrollbar; "All" clears the
+// filter), and the sort on the right as a segmented control (all three options visible, one click
+// to switch).
 export function Controls({ genres, value, onChange }: Props) {
   const selected = new Set(value.genreIds)
 
@@ -24,11 +25,11 @@ export function Controls({ genres, value, onChange }: Props) {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-start gap-3">
+      <div className="flex flex-wrap items-start gap-3">
         <div
           role="group"
           aria-label="Genres"
-          className="flex min-w-0 flex-1 gap-2 overflow-x-auto pt-1 pb-2 [scrollbar-color:var(--color-border)_transparent] [scrollbar-width:thin]"
+          className="flex min-w-0 grow basis-full gap-2 overflow-x-auto pt-1 pb-2 [scrollbar-color:var(--color-border)_transparent] [scrollbar-width:thin] sm:basis-0"
         >
           <button
             type="button"

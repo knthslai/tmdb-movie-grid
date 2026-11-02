@@ -6,6 +6,14 @@ export function countGenreMatches(movie: Pick<Movie, 'genre_ids'>, selected: Set
   return movie.genre_ids.filter((id) => selected.has(id)).length
 }
 
+// Search results come back unfiltered, so the genre picks are applied here: keep movies
+// with at least one selected genre ("any of", like `with_genres` on discover). No picks keeps all.
+export function filterByGenres<T extends Pick<Movie, 'genre_ids'>>(movies: T[], genreIds: number[]): T[] {
+  if (genreIds.length === 0) return movies
+  const selected = new Set(genreIds)
+  return movies.filter((movie) => countGenreMatches(movie, selected) > 0)
+}
+
 // The number each sort option orders by, highest first. A missing release date sorts last.
 const SORT_VALUE: Record<SortOption, (movie: SortableMovie) => number> = {
   'popularity.desc': (movie) => movie.popularity,

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { MIN_VOTES, TOP_RATED_MIN_VOTES, posterUrl, toDiscoverParams, toWithGenres } from './tmdb'
+import { MIN_VOTES, TOP_RATED_MIN_VOTES, posterUrl, toDiscoverParams, toSearchParams, toWithGenres } from './tmdb'
 
 describe('toWithGenres', () => {
   it('returns undefined for no genres', () => {
@@ -23,6 +23,12 @@ describe('toDiscoverParams', () => {
   it('always sends a vote floor, higher for top rated', () => {
     expect(toDiscoverParams({})['vote_count.gte']).toBe(MIN_VOTES)
     expect(toDiscoverParams({ sortBy: 'vote_average.desc' })['vote_count.gte']).toBe(TOP_RATED_MIN_VOTES)
+  })
+})
+
+describe('toSearchParams', () => {
+  it('trims the query and defaults to page 1 without adult titles', () => {
+    expect(toSearchParams('  alien ')).toEqual({ query: 'alien', page: 1, include_adult: false })
   })
 })
 

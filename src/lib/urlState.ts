@@ -1,9 +1,10 @@
 import { useCallback, useState } from 'react'
 import { DEFAULT_SORT, isSortOption, type SortOption } from '../api/tmdb'
 
-// The filter and sort live in the URL (?genres=28,12&sort=vote_average.desc),
+// The search, filter and sort live in the URL (?q=alien&genres=28,12&sort=vote_average.desc),
 // so a reload or a shared link shows the same view.
 export type ViewState = {
+  query: string
   genreIds: number[]
   sortBy: SortOption
 }
@@ -16,12 +17,13 @@ export function parseViewState(search: string): ViewState {
     .map(Number)
     .filter((id) => Number.isInteger(id) && id > 0)
   const sort = params.get('sort')
-  return { genreIds, sortBy: isSortOption(sort) ? sort : DEFAULT_SORT }
+  return { query: params.get('q') ?? '', genreIds, sortBy: isSortOption(sort) ? sort : DEFAULT_SORT }
 }
 
 // Defaults are left out so the plain URL stays clean.
-export function toSearch({ genreIds, sortBy }: ViewState): string {
+export function toSearch({ query, genreIds, sortBy }: ViewState): string {
   const params = new URLSearchParams()
+  if (query.trim()) params.set('q', query)
   if (genreIds.length > 0) params.set('genres', genreIds.join(','))
   if (sortBy !== DEFAULT_SORT) params.set('sort', sortBy)
   const search = params.toString()
