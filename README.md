@@ -1,32 +1,34 @@
-# React + TypeScript + Vite
+# Discover movies
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A small React app that fetches movies from TMDB's `/discover/movie` endpoint and shows them as a grid of cards.
 
-Currently, two official plugins are available:
+## Run it
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+cp .env.example .env.local   # paste the TMDB v3 API key
+npm i
+npm start                    # opens http://localhost:5173
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Other scripts: `npm test`, `npm run typecheck`, `npm run lint`, `npm run build`.
+
+## Stack
+
+Vite, React 19, TypeScript, Tailwind CSS v4, TanStack Query, Vitest.
+
+## Decisions
+
+_To fill in from the actual implementation._
+
+## Trade-offs and limitations
+
+_To fill in._
+
+## What I'd do next
+
+_To fill in._
+
+## Time spent
+
+See the time log in [KANBAN.md](KANBAN.md).
+
