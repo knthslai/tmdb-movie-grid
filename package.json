@@ -11,7 +11,8 @@
     "typecheck": "tsc -b",
     "lint": "oxlint",
     "test": "vitest run --passWithNoTests",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "todo": "grep -rn 'TODO(T' src"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.105.2",
