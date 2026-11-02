@@ -31,4 +31,5 @@ Spacing, font sizes and breakpoints use Tailwind's defaults.
 - One accent. Don't add a second accent color for decoration.
 - No gradients over the whole card, no glass/blur cards, no stacked shadows. A poster overlay may use a single dark scrim so text stays readable.
 - Motion: transitions 150–250 ms with `ease-reveal`, and wrapped in `motion-safe:` so reduced-motion users get none.
+- Enter animations come from [tw-animate-css](https://github.com/Wombosvideo/tw-animate-css): compose `animate-in` with effects such as `fade-in`, `slide-in-from-bottom-2` or `zoom-in-95`, plus `duration-*` and `ease-reveal`. Always prefix with `motion-safe:`. `animate-pulse` (built into Tailwind) is for loading skeletons.
 - Every interactive element shows the focus ring; don't remove `outline` without a replacement.
