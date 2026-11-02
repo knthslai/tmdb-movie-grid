@@ -6,7 +6,7 @@ One spec per ticket. The **issue** holds status, the checklist and the discussio
 |---|---|---|
 | T00 Scaffold and tooling | [#1](https://github.com/knthslai/tmdb-movie-grid/issues/1) | [T00-scaffold.md](T00-scaffold.md) |
 | T01 Scope and assumptions | [#2](https://github.com/knthslai/tmdb-movie-grid/issues/2) | [T01-scope.md](T01-scope.md) |
-| T02 Types and URL builder | [#3](https://github.com/knthslai/tmdb-movie-grid/issues/3) | [T02-tmdb-api.md](T02-tmdb-api.md) |
+| T02 TMDB client, types and params | [#3](https://github.com/knthslai/tmdb-movie-grid/issues/3) | [T02-tmdb-api.md](T02-tmdb-api.md) |
 | T03 Data hook | [#4](https://github.com/knthslai/tmdb-movie-grid/issues/4) | [T03-data-hook.md](T03-data-hook.md) |
 | T04 Movie card | [#5](https://github.com/knthslai/tmdb-movie-grid/issues/5) | [T04-movie-card.md](T04-movie-card.md) |
 | T05 Grid and page states | [#6](https://github.com/knthslai/tmdb-movie-grid/issues/6) | [T05-grid-states.md](T05-grid-states.md) |
@@ -23,6 +23,6 @@ One spec per ticket. The **issue** holds status, the checklist and the discussio
 1. Move the card to **Building** (one at a time). Create the branch: `git switch -c task/t02-tmdb-api`. The branch name links my Claude questions to the issue.
 2. Read the spec. Rewrite the acceptance criteria on the issue if I disagree with them.
 3. Build it myself, following the spec's steps. Ask Claude when stuck. Every exchange is posted to the issue automatically.
-4. Run the checks in the spec. Commit with the ticket id in the message (`feat: discover URL builder (T02)`).
+4. Run the checks in the spec. Commit with the ticket id in the message (`feat: discover params and genre join (T02)`).
 5. Move the card to **Verify and understand**. Work through the Done gate on the issue, then move it to **Done** by hand.
 

@@ -13,7 +13,7 @@ Issue: [#5](https://github.com/knthslai/tmdb-movie-grid/issues/5) · File: `src/
 
 1. **Props.** Decide the props: the whole `Movie`, or only the fields the card uses? Write the type.
 2. **Static markup.** Poster, title, one extra property (rating to one decimal, or release year). Render it with one hardcoded movie in `App.tsx` first.
-3. **Missing poster.** Render a placeholder block with the same aspect ratio. Checkpoint: pass `poster_path: null` and check the layout doesn't jump.
+3. **Missing poster.** Render a placeholder block with the same aspect ratio. Checkpoint: pass a movie without `poster_path` and check the layout doesn't jump.
 4. **Interaction.** Reveal the overview on hover **and** keyboard focus. Checkpoint: Tab through the cards with no mouse.
 5. **Long titles.** Try a very long title. Clamp it with `line-clamp-2` or let it wrap, deliberately.
 

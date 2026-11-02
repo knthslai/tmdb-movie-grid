@@ -10,17 +10,18 @@ This is where server state lives. Reviewers will ask what happens when filters c
 
 - [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) takes `queryKey` and `queryFn`, and returns `data`, `isPending`, `isError`, `error`, `refetch`, `isFetching`, and more.
 - The **query key is the cache key.** Every input that changes the request must be in it.
-- `fetch` does not throw on 404 or 401; it only rejects on network failure. Check `response.ok` yourself.
-- `queryFn` receives `{ signal }`. Passing it to `fetch` cancels outdated requests.
+- The package throws `TMDBError` on a non-2xx response, so `useQuery` sees the error without a `response.ok` check. `http_status_code` tells a 401 from a 429.
+- `queryFn` receives `{ signal }`, but the package's methods don't accept an `AbortSignal` (I found no `signal` in its code). Outdated requests still finish; TanStack Query just ignores their results because the key changed.
 - `placeholderData: keepPreviousData` keeps showing the old results while new ones load.
 
 ## Steps
 
-1. **Fetch function** (plain async function, no React): build the URL with T02, call `fetch`, throw a readable `Error` when `!response.ok` (include `status_message` if present), and return typed JSON.
-2. **Missing key.** If `import.meta.env.VITE_TMDB_API_KEY` is empty, throw a clear error before fetching. Checkpoint: rename `.env.local` temporarily, restart, and see the message.
+1. **Query function** (plain async function, no React): map my T02 params to `DiscoverMovieParams` (genre param included) and call `tmdb.discover.movie`. Checkpoint: is the return type `PaginatedResponse<MovieResultItem>`, and where does it become my `Movie`?
+2. **Missing key.** Check what the package does with an empty key, then make sure the user sees a readable message, not an empty grid. Checkpoint: rename `.env.local` temporarily, restart, and see the message.
 3. **Hook.** Wrap the fetch function in `useQuery`. Put the params object in the key.
 4. **Try it.** Temporarily render `data?.results.length` and the error message in `App.tsx`. Open DevTools → Network and change a param: does a new request fire?
-5. **Retries.** Notice that failed requests retry 3 times by default. Decide whether a 401 should retry.
+5. **Retries.** Notice that failed requests retry 3 times by default. Decide whether a 401 should retry (`error instanceof TMDBError` and `http_status_code`).
+6. **Genres query.** A second `useQuery` for `tmdb.genres.movie_list()`, if I chose to fetch genres in T02.
 
 ## Edge cases
 
@@ -32,4 +33,5 @@ This is where server state lives. Reviewers will ask what happens when filters c
 
 - Retry policy for 4xx errors.
 - `staleTime`: how fresh does discover data need to be?
+- Query key: my params object as-is, or with the genre ids sorted first?
 

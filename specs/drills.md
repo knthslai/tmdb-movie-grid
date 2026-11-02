@@ -22,7 +22,7 @@ Claude's role in drills is **before and after only**:
 
 ## D3 — Second filter combined with the first
 
-- Touches: params type → URL builder → URL state → controls → query key → a new test.
+- Touches: params type → genre/param mapping → URL state → controls → query key → a new test.
 - Practice saying the order out loud before touching code.
 
 ## D4 — Favourites in localStorage

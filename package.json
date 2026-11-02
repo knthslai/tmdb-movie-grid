@@ -12,9 +12,11 @@
     "lint": "oxlint",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
+    "test:types": "vitest --typecheck.only --run --passWithNoTests",
     "todo": "grep -rn 'TODO(T' src"
   },
   "dependencies": {
+    "@lorenzopant/tmdb": "^2.2.0",
     "@tanstack/react-query": "^5.105.2",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"

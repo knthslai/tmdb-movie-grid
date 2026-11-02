@@ -14,7 +14,7 @@ Other scripts: `npm test`, `npm run typecheck`, `npm run lint`, `npm run build`.
 
 ## Stack
 
-Vite, React 19, TypeScript, Tailwind CSS v4 (with tw-animate-css for enter animations), TanStack Query, Vitest.
+Vite, React 19, TypeScript, Tailwind CSS v4 (with tw-animate-css for enter animations), TanStack Query, [@lorenzopant/tmdb](https://www.npmjs.com/package/@lorenzopant/tmdb) (typed TMDB client), Vitest.
 
 ## Decisions
 
