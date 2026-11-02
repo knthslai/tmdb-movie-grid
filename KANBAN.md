@@ -58,7 +58,10 @@ Code reference: dcfb835 (create-vite output), 98d13b8 (tooling)
 - Can explain what `QueryClientProvider` provides and what the default `staleTime` is:
 
 ### AI involvement
-Claude Code ran create-vite, added Tailwind, TanStack Query and Vitest, wrote `env.d.ts`, `.env.example` and the `start`/`test`/`typecheck` scripts, removed the demo app, and drafted this board and the README skeleton.
+Claude Code ran create-vite, added Tailwind, TanStack Query and Vitest, wrote `env.d.ts`, `.env.example` and the `start`/`test`/`typecheck` scripts, removed the demo app, and drafted this board and the README skeleton. It also wrote `.zed/settings.json` (language-server completions and inlay hints on; AI edit predictions only when holding Option, and off in `src/api/**`, `src/lib/**` and tests) and `.prettierrc`.
+
+### Rule for AI edit predictions
+Any accepted prediction makes that card AI-assisted, and its AI involvement section says what was accepted.
 
 ## T01 — Confirm scope, assumptions and these cards
 Status: Ready

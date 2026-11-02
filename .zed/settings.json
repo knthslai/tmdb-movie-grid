@@ -1,0 +1,48 @@
+// Project settings for the take-home.
+// Goal: fast non-AI completion everywhere; AI edit predictions only on demand,
+// and never in the data/sort logic the reviewers will probe.
+{
+  // Non-AI: language-server completions, signatures and inline hints.
+  "show_completions_on_input": true,
+  "show_completion_documentation": true,
+  "auto_signature_help": true,
+  "completions": {
+    "lsp": true,
+    "words": "fallback",
+    "lsp_insert_mode": "replace_suffix"
+  },
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": true
+  },
+
+  // AI edit predictions: hidden until you hold Option (subtle mode),
+  // and off entirely for the core logic files.
+  "edit_predictions": {
+    "mode": "subtle",
+    "disabled_globs": ["...", "src/api/**", "src/lib/**", "**/*.test.ts"]
+  },
+
+  "lsp": {
+    "vtsls": {
+      "settings": {
+        "typescript": {
+          "inlayHints": {
+            "parameterNames": { "enabled": "literals" },
+            "functionLikeReturnTypes": { "enabled": true },
+            "variableTypes": { "enabled": false }
+          },
+          "suggest": { "completeFunctionCalls": false }
+        }
+      }
+    },
+    "tailwindcss-language-server": {
+      "settings": {
+        "experimental": { "configFile": "src/index.css" }
+      }
+    }
+  },
+
+  "format_on_save": "on"
+}
