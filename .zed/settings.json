@@ -1,8 +1,6 @@
 // Project settings for the take-home.
-// Goal: fast non-AI completion everywhere; AI edit predictions only on demand,
-// and never in the data/sort logic the reviewers will probe.
 {
-  // Non-AI: language-server completions, signatures and inline hints.
+  // Language-server completions, signatures and inline hints.
   "show_completions_on_input": true,
   "show_completion_documentation": true,
   "auto_signature_help": true,
@@ -17,7 +15,7 @@
     "show_parameter_hints": true
   },
 
-  // AI edit predictions: hidden until you hold Option (subtle mode),
+  // Edit predictions: hidden until you hold Option (subtle mode),
   // and off entirely for the core logic files.
   "edit_predictions": {
     "mode": "subtle",
