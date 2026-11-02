@@ -1,15 +1,45 @@
-// T04 — Movie card
-// Issue: https://github.com/knthslai/tmdb-movie-grid/issues/5 · Spec: specs/T04-movie-card.md
-// Empty stub with TODO tags, created by Claude Code. The code is mine to write.
+import { posterUrl, type Movie } from '../api/tmdb'
 
-// TODO(T04): props type (whole Movie, or only the fields the card uses?)
-// TODO(T04): poster, title, and one extra property (rating or release year)
-// TODO(T04): placeholder with the same 2:3 aspect ratio when there's no poster
-// TODO(T04): reveal the overview on hover AND keyboard focus
-// TODO(T04): handle a long title, an empty overview, and a 0-vote rating
-// TODO(T07, optional): size variant from the rating
-// TODO(T08, optional): transition on the overview reveal; respect reduced motion
-//
-// Own it. Be ready to explain:
-// - how a keyboard user gets the hover content
-// - how to make the card open a details view (drill D5)
+// Poster-first card. Hover or keyboard focus slides the overview up over the poster.
+export function MovieCard({ movie }: { movie: Movie }) {
+  const src = posterUrl(movie.poster_path)
+  const year = movie.release_date.slice(0, 4) // "" when TMDB has no date
+  const rated = movie.vote_count > 0
+
+  return (
+    <article
+      tabIndex={0}
+      className="group w-40 overflow-hidden rounded-card bg-surface sm:w-44 motion-safe:transition-transform motion-safe:duration-200 ease-reveal hover:-translate-y-1 focus-visible:-translate-y-1"
+    >
+      <div className="relative aspect-poster">
+        {src ? (
+          <img src={src} alt={`${movie.title} poster`} loading="lazy" className="h-full w-full object-cover" />
+        ) : (
+          <div className="flex h-full items-center justify-center bg-surface-raised p-4 text-center text-sm text-muted">
+            No poster
+          </div>
+        )}
+
+        {movie.overview && (
+          <div className="absolute inset-0 flex items-end bg-bg/90 p-3 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 motion-safe:transition-opacity motion-safe:duration-200 ease-reveal">
+            <p className="line-clamp-[9] text-xs leading-relaxed">{movie.overview}</p>
+          </div>
+        )}
+      </div>
+
+      <div className="p-3">
+        <h2 className="line-clamp-2 min-h-10 text-sm font-medium" title={movie.title}>
+          {movie.title}
+        </h2>
+        <p className="mt-1 flex items-center justify-between text-xs text-muted">
+          <span>{year || '—'}</span>
+          {rated ? (
+            <span className="font-medium text-accent">★ {movie.vote_average.toFixed(1)}</span>
+          ) : (
+            <span>No rating</span>
+          )}
+        </p>
+      </div>
+    </article>
+  )
+}
