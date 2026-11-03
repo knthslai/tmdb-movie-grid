@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { MIN_VOTES, TOP_RATED_MIN_VOTES, posterUrl, toDiscoverParams, toSearchParams, toWithGenres } from './tmdb'
 
 describe('toWithGenres', () => {
@@ -39,5 +39,22 @@ describe('posterUrl', () => {
 
   it('builds a URL that contains the path', () => {
     expect(posterUrl('/abc.jpg')).toContain('/abc.jpg')
+  })
+})
+
+describe('without an API key', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs()
+    vi.resetModules()
+  })
+
+  it('imports fine and rejects each request with a clear message', async () => {
+    vi.stubEnv('VITE_TMDB_API_KEY', '')
+    vi.resetModules()
+    const api = await import('./tmdb')
+
+    await expect(api.discoverMovies()).rejects.toThrow('Missing VITE_TMDB_API_KEY')
+    await expect(api.searchMovies('alien')).rejects.toThrow('Missing VITE_TMDB_API_KEY')
+    expect(api.posterUrl('/abc.jpg')).toBe('https://image.tmdb.org/t/p/w342/abc.jpg')
   })
 })

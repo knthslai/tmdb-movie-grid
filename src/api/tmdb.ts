@@ -2,6 +2,7 @@
 // @lorenzopant/tmdb does the HTTP, URL building and response types.
 // This file is the one place the app talks to it, so the rest of the app never imports the package.
 import {
+  IMAGE_SECURE_BASE_URL,
   TMDB,
   type DiscoverMovieParams,
   type DiscoverMovieSortBy,
@@ -14,9 +15,17 @@ import {
 
 const apiKey = import.meta.env.VITE_TMDB_API_KEY
 
-// One client for the whole app. A v3 key (not a JWT) is sent as the `api_key` query param.
+// One client for the whole app, created on first use. `new TMDB(undefined)` throws, so creating it
+// at import time crashed the app (and every test that imports this file) when the key was missing.
+// A v3 key (not a JWT) is sent as the `api_key` query param.
 // The package's own cache is off by default; TanStack Query does the caching instead.
-export const tmdb = new TMDB(apiKey)
+let client: TMDB | undefined
+function tmdb(): TMDB {
+  if (!apiKey) {
+    throw new Error('Missing VITE_TMDB_API_KEY. Add it to .env.local and restart the dev server.')
+  }
+  return (client ??= new TMDB(apiKey))
+}
 
 // The fields the UI uses. The package turns TMDB's `null` into `undefined`,
 // so a movie without a poster has `poster_path: undefined`.
@@ -78,17 +87,10 @@ export function toDiscoverParams({ genreIds = [], sortBy = DEFAULT_SORT, page = 
   }
 }
 
-function requireApiKey() {
-  if (!apiKey) {
-    throw new Error('Missing VITE_TMDB_API_KEY. Add it to .env.local and restart the dev server.')
-  }
-}
-
 // One page of /discover/movie. Throws on a missing key or a failed request,
 // so the query lands in its error state instead of showing an empty grid.
 export async function discoverMovies(params: DiscoverParams = {}): Promise<DiscoverResult> {
-  requireApiKey()
-  return tmdb.discover.movie(toDiscoverParams(params))
+  return tmdb().discover.movie(toDiscoverParams(params))
 }
 
 // /search/movie matches titles only and takes no genre or sort params,
@@ -99,17 +101,16 @@ export function toSearchParams(query: string, page = 1): SearchMoviesParams {
 
 // One page of /search/movie for a title query.
 export async function searchMovies(query: string, page = 1): Promise<DiscoverResult> {
-  requireApiKey()
-  return tmdb.search.movies(toSearchParams(query, page))
+  return tmdb().search.movies(toSearchParams(query, page))
 }
 
 export async function fetchGenres(): Promise<Genre[]> {
-  requireApiKey()
-  const { genres } = await tmdb.genres.movie_list()
+  const { genres } = await tmdb().genres.movie_list()
   return genres
 }
 
 // Full poster URL, or undefined when TMDB has no poster (the card shows a placeholder).
+// Built by hand so rendering a card never needs the client (or the key).
 export function posterUrl(path: string | undefined, size: PosterSize = 'w342'): string | undefined {
-  return path ? tmdb.images.poster(path, size) : undefined
+  return path ? `${IMAGE_SECURE_BASE_URL}${size}${path}` : undefined
 }
