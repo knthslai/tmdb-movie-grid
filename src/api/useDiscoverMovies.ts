@@ -1,5 +1,15 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { discoverMovies, fetchGenres, searchMovies, toDiscoverParams, toSearchParams, type DiscoverParams } from './tmdb'
+import {
+  discoverMovies,
+  fetchGenres,
+  searchMovies,
+  toDiscoverParams,
+  toSearchParams,
+  getMovie,
+  getPersonBio,
+  searchPeople,
+  type DiscoverParams,
+} from './tmdb'
 
 // The query key is the cache key, so every param must be in it. Using the mapped TMDB params
 // means the same genres in a different order share one cache entry.
@@ -28,5 +38,31 @@ export function useGenres() {
     queryKey: ['genres'],
     queryFn: fetchGenres,
     staleTime: Infinity,
+  })
+}
+
+// REVIEW(searchby.3): query hooks for the actor dropdown and the actor biography
+export function useSearchPeople(query: string) {
+  return useQuery({
+    queryKey: ['people', query.trim()],
+    queryFn: () => searchPeople(query),
+    enabled: query.trim() !== '',
+    placeholderData: keepPreviousData,
+  })
+}
+
+export function usePersonBio(personId: number) {
+  return useQuery({
+    queryKey: ['person', personId],
+    queryFn: () => getPersonBio(personId),
+    staleTime: Infinity,
+  })
+}
+
+export function useGetMovies(video_id: number) {
+  return useQuery({
+    queryKey: ['movieId', video_id],
+    queryFn: () => getMovie(video_id),
+    placeholderData: keepPreviousData,
   })
 }

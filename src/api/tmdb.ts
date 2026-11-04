@@ -7,8 +7,11 @@ import {
   type DiscoverMovieParams,
   type DiscoverMovieSortBy,
   type Genre,
+  type MovieDetails,
   type MovieResultItem,
   type PaginatedResponse,
+  type PersonDetails,
+  type PersonResultItem,
   type PosterSize,
   type SearchMoviesParams,
 } from '@lorenzopant/tmdb'
@@ -22,7 +25,9 @@ const apiKey = import.meta.env.VITE_TMDB_API_KEY
 let client: TMDB | undefined
 function tmdb(): TMDB {
   if (!apiKey) {
-    throw new Error('Missing VITE_TMDB_API_KEY. Add it to .env.local and restart the dev server.')
+    throw new Error(
+      'Missing VITE_TMDB_API_KEY. Add it to .env.local and restart the dev server.',
+    )
   }
   return (client ??= new TMDB(apiKey))
 }
@@ -31,7 +36,15 @@ function tmdb(): TMDB {
 // so a movie without a poster has `poster_path: undefined`.
 export type Movie = Pick<
   MovieResultItem,
-  'id' | 'title' | 'overview' | 'poster_path' | 'release_date' | 'vote_average' | 'vote_count' | 'popularity' | 'genre_ids'
+  | 'id'
+  | 'title'
+  | 'overview'
+  | 'poster_path'
+  | 'release_date'
+  | 'vote_average'
+  | 'vote_count'
+  | 'popularity'
+  | 'genre_ids'
 >
 
 export type { Genre }
@@ -55,6 +68,8 @@ export type DiscoverParams = {
   genreIds?: number[]
   sortBy?: SortOption
   page?: number
+  movie?: Movie
+  actorId?: number
 }
 
 export type DiscoverResult = PaginatedResponse<Movie>
@@ -75,21 +90,31 @@ export const MIN_VOTES = 50
 export const TOP_RATED_MIN_VOTES = 200
 
 // App params -> the package's param names. Undefined values are left off the URL by the package.
-export function toDiscoverParams({ genreIds = [], sortBy = DEFAULT_SORT, page = 1 }: DiscoverParams): DiscoverMovieParams {
+export function toDiscoverParams({
+  genreIds = [],
+  sortBy = DEFAULT_SORT,
+  page = 1,
+  actorId,
+}: DiscoverParams): DiscoverMovieParams {
   return {
     with_genres: toWithGenres(genreIds),
+    with_cast: actorId,
     sort_by: sortBy,
     page,
     include_adult: false,
-    'vote_count.gte': sortBy === 'vote_average.desc' ? TOP_RATED_MIN_VOTES : MIN_VOTES,
+    'vote_count.gte':
+      sortBy === 'vote_average.desc' ? TOP_RATED_MIN_VOTES : MIN_VOTES,
     // Without a date cap, "newest" is unreleased movies with no poster or overview yet.
-    'primary_release_date.lte': sortBy === 'primary_release_date.desc' ? today() : undefined,
+    'primary_release_date.lte':
+      sortBy === 'primary_release_date.desc' ? today() : undefined,
   }
 }
 
 // One page of /discover/movie. Throws on a missing key or a failed request,
 // so the query lands in its error state instead of showing an empty grid.
-export async function discoverMovies(params: DiscoverParams = {}): Promise<DiscoverResult> {
+export async function discoverMovies(
+  params: DiscoverParams = {},
+): Promise<DiscoverResult> {
   return tmdb().discover.movie(toDiscoverParams(params))
 }
 
@@ -100,7 +125,10 @@ export function toSearchParams(query: string, page = 1): SearchMoviesParams {
 }
 
 // One page of /search/movie for a title query.
-export async function searchMovies(query: string, page = 1): Promise<DiscoverResult> {
+export async function searchMovies(
+  query: string,
+  page = 1,
+): Promise<DiscoverResult> {
   return tmdb().search.movies(toSearchParams(query, page))
 }
 
@@ -111,6 +139,41 @@ export async function fetchGenres(): Promise<Genre[]> {
 
 // Full poster URL, or undefined when TMDB has no poster (the card shows a placeholder).
 // Built by hand so rendering a card never needs the client (or the key).
-export function posterUrl(path: string | undefined, size: PosterSize = 'w342'): string | undefined {
+export function posterUrl(
+  path: string | undefined,
+  size: PosterSize = 'w342',
+): string | undefined {
   return path ? `${IMAGE_SECURE_BASE_URL}${size}${path}` : undefined
+}
+
+// REVIEW(searchby.2): actor type, people search, bio lookup and profile image URL
+export type Actor = Pick<PersonResultItem, 'id' | 'name' | 'profile_path'>
+
+// TMDB's person search already matches names loosely (partial and misspelled names).
+// Only people known for acting are kept, and the most popular come first.
+export async function searchPeople(query: string): Promise<Actor[]> {
+  const { results } = await tmdb().search.person({
+    query: query.trim(),
+    include_adult: false,
+  })
+  return results
+    .filter((person) => person.known_for_department === 'Acting')
+    .sort((a, b) => b.popularity - a.popularity)
+    .slice(0, 8)
+    .map(({ id, name, profile_path }) => ({ id, name, profile_path }))
+}
+
+export async function getPersonBio(person_id: number): Promise<PersonDetails> {
+  return tmdb().people.details({ person_id })
+}
+
+export function profileUrl(
+  path: string | undefined,
+  size: 'w92' | 'w185' = 'w185',
+): string | undefined {
+  return path ? `${IMAGE_SECURE_BASE_URL}${size}${path}` : undefined
+}
+
+export async function getMovie(movie_id: number): Promise<MovieDetails> {
+  return tmdb().movies.details({ movie_id: Number(movie_id) })
 }
